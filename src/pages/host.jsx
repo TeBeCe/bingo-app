@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Button, Typography, List, InputNumber, Space } from "antd";
+import {Button, Typography, List, InputNumber, Space, QRCode} from "antd";
 
 const { Title } = Typography;
 
@@ -106,6 +106,7 @@ export default function Host() {
           <div style={{ padding: "10px 20px", background: "#f0f2f5", fontWeight: "bold" }}>
             History
           </div>
+
           <div style={{ flex: 1, overflowY: "auto" }}>
             <List
                 bordered
@@ -114,6 +115,7 @@ export default function Host() {
                 renderItem={(item, index) => (
                     <List.Item>{`${numbers.length - index}. ${item}`}</List.Item>
                 )}
+                locale={{emptyText:<Space><QRCode value={"https://tebece.github.io/bingo-app/"} /></Space>}}
             />
           </div>
         </div>
