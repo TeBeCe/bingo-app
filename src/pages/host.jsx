@@ -7,20 +7,23 @@ export default function Host() {
   const [numbers, setNumbers] = useState([]);
   const [current, setCurrent] = useState(null);
   const [maxNumber, setMaxNumber] = useState(75);
-  const [delay, setDelay] = useState(7000);
+  const [delay, setDelay] = useState(5000);
   const [isRunning, setIsRunning] = useState(false);
   const intervalRef = useRef(null);
 
-  const generateNumber = () => {
-    if (numbers.length >= maxNumber) return;
-    let newNum;
-    do {
-      newNum = Math.floor(Math.random() * maxNumber) + 1;
-    } while (numbers.includes(newNum));
+    const generateNumber = () => {
+        setNumbers((prevNumbers) => {
+            if (prevNumbers.length >= maxNumber) return prevNumbers;
 
-    setCurrent(newNum);
-    setNumbers((prev) => [newNum, ...prev]);
-  };
+            let newNum;
+            do {
+                newNum = Math.floor(Math.random() * maxNumber) + 1;
+            } while (prevNumbers.includes(newNum));
+
+            setCurrent(newNum);
+            return [...prevNumbers, newNum];
+        });
+    };
 
   const startAuto = () => {
     if (isRunning) return;
@@ -61,13 +64,13 @@ export default function Host() {
           <Title
               level={1}
               style={{
-                fontSize: "12rem",
+                fontSize: "10rem",
                 margin: 0,
                 color: "#ff4d4f",
                 lineHeight: 1,
               }}
           >
-            {current ?? "🎲"}
+            {current ?? <QRCode bgColor={'white'} value={"https://tebece.github.io/bingo-app/"} />}
           </Title>
         </div>
 
@@ -96,27 +99,18 @@ export default function Host() {
               width: "100%",
               maxWidth: "1200px",
               marginTop: 40,
-              background: "white",
               borderRadius: 8,
               overflow: "hidden",
               display: "flex",
               flexDirection: "column",
             }}
         >
-          <div style={{ padding: "10px 20px", background: "#f0f2f5", fontWeight: "bold" }}>
+          <div style={{ padding: "10px 20px", fontWeight: "bold", fontSize: "x-large" }}>
             History
           </div>
 
-          <div style={{ flex: 1, overflowY: "auto" }}>
-            <List
-                bordered
-                size="large"
-                dataSource={numbers}
-                renderItem={(item, index) => (
-                    <List.Item>{`${numbers.length - index}. ${item}`}</List.Item>
-                )}
-                locale={{emptyText:<Space><QRCode value={"https://tebece.github.io/bingo-app/"} /></Space>}}
-            />
+          <div style={{ flex: 1,fontSize: 'x-large', overflowY: "auto" }}>
+              {numbers.join(', ')}
           </div>
         </div>
 
